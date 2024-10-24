@@ -1,6 +1,61 @@
 "use client"
 
+import { useState } from "react";
+
 const RegisterPage = () => {
+    const [password , setPassword] = useState("")
+    const [strength, setStrength] = useState({
+        uppercase : false,
+        lowercase : false,
+        number : false,
+        specialChar : false,
+        length : false,
+        strengthValue: 0,
+    })
+
+    const evaluatePasswordStrength = (password: string) => {
+        let strengthValue = 0;
+
+        const updatedStrength = {
+          uppercase: /[A-Z]/.test(password),
+          lowercase: /[a-z]/.test(password),
+          number: /[0-9]/.test(password),
+          specialChar: /[^A-Za-z0-9]/.test(password),
+          length: password.length >= 6,
+          strengthValue: 0,
+        };
+
+        if (updatedStrength.uppercase) {
+            strengthValue += 1;
+            strength.uppercase = true;
+            
+        };
+        if (updatedStrength.lowercase) {
+            strengthValue += 1
+            strength.lowercase = true;
+        };
+        if (updatedStrength.number) {
+            strengthValue += 1
+            strength.number = true;
+        };
+        if (updatedStrength.specialChar) {
+            strengthValue += 1
+            strength.specialChar = true;
+        };
+        if (updatedStrength.length) {
+            strengthValue += 1
+            strength.length = true;
+        };
+    
+        updatedStrength.strengthValue = strengthValue;
+    
+        setStrength(updatedStrength)
+    }
+    const handlePasswordChange = (e) => {
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+        evaluatePasswordStrength(newPassword);
+      };
     return (
         <div
         className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4"
@@ -64,6 +119,7 @@ const RegisterPage = () => {
                 <input
                   name="password"
                   type="password"
+                  onChange={handlePasswordChange}
                   required
                   className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                   placeholder="Enter password"
@@ -100,6 +156,55 @@ const RegisterPage = () => {
                   />
                 </svg>
               </div>
+            </div>
+              <div className="mt-2 grid grid-cols-5 gap-5">
+              <div className="bg-gray-200 h-2 rounded-full">
+                <div
+                  className={`h-2  rounded-full ${
+                    strength.lowercase ? 'bg-green-500 ' :
+                    'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <div className="bg-gray-200 h-2 rounded-full">
+                <div
+                  className={`h-2  rounded-full ${
+                    strength.uppercase ? 'bg-green-500' :
+                    'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <div className="bg-gray-200 h-2 rounded-full">
+                <div
+                  className={`h-2  rounded-full ${
+                    strength.number ? 'bg-green-500 ' :
+                    'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <div className="bg-gray-200 h-2 rounded-full">
+                <div
+                  className={`h-2  rounded-full ${
+                    strength.specialChar ? 'bg-green-500' :
+                    'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <div className="bg-gray-200 h-2 rounded-full">
+                <div
+                  className={`h-2  rounded-full ${
+                    strength.length ? 'bg-green-500 ' :
+                    'bg-gray-300'
+                  }`}
+                ></div>
+              </div>
+              <p className="text-sm whitespace-nowrap mt-1 text-gray-600">
+                {strength.strengthValue === 1 && "Too Weak"}
+                {strength.strengthValue === 2 && "Weak"}
+                {strength.strengthValue === 3 && "Medium"}
+                {strength.strengthValue === 4 && "Strong"}
+                {strength.strengthValue === 5 && "Very Strong"}
+              </p>
             </div>
             <div className="flex items-center mt-6">
               <input
