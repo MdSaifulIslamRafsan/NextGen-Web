@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const RegisterPage = () => {
@@ -15,6 +15,7 @@ const RegisterPage = () => {
     const [strength, setStrength] = useState(0);
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [confirmShowPassword, setConfirmShowPassword] = useState<boolean>(false);
+    console.log(strength)
 
 
     const updatedStrength : StrengthState  = {
@@ -27,17 +28,14 @@ const RegisterPage = () => {
     const evaluatePasswordStrength = () => {
         let strengthValue = 0;
 
-       
-        console.log(updatedStrength)
-
         if (updatedStrength.uppercase) {
             strengthValue += 1;
         };
         if (updatedStrength.lowercase) {
-            strengthValue += 1
+             strengthValue += 1
         };
         if (updatedStrength.number) {
-            strengthValue += 1
+             strengthValue += 1
         };
         if (updatedStrength.specialChar) {
             strengthValue += 1
@@ -45,15 +43,16 @@ const RegisterPage = () => {
         if (updatedStrength.length) {
             strengthValue += 1;
         };
-        if (updatedStrength.length) {
-            strengthValue += 1;
-        };
         setStrength(strengthValue)
     }
+
+    useEffect(()=>{
+        evaluatePasswordStrength()
+    },[password])
+
     const handlePasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
-        evaluatePasswordStrength();
       };
     return (
         <div
@@ -209,7 +208,17 @@ const RegisterPage = () => {
                 </a>
               </label>
             </div>
-            <div className="mt-12">
+            <div className="text-black mt-2">
+                <p>Password must fulfill the following criteria:</p>
+                <ul>
+                    <li>Lowercase: {updatedStrength.lowercase ? '✔️' : '❌'}</li>
+                    <li>Uppercase: {updatedStrength.uppercase ? '✔️' : '❌'}</li>
+                    <li>Number: {updatedStrength.number ? '✔️' : '❌'}</li>
+                    <li>Special Character: {updatedStrength.specialChar ? '✔️' : '❌'}</li>
+                    <li>Length ≥ 6: {updatedStrength.length ? '✔️' : '❌'}</li>
+                </ul>
+            </div>
+            <div className="mt-4">
               <button
                 type="submit"
                 className="w-full py-2.5 px-4 text-sm font-semibold tracking-wider rounded-full text-white bg-gray-800 hover:bg-[#222] focus:outline-none"
