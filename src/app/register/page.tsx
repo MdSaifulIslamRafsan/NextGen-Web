@@ -3,8 +3,16 @@
 import { useState } from "react";
 
 const RegisterPage = () => {
+    interface StrengthState  {
+        uppercase : boolean,
+        lowercase : boolean,
+        number : boolean,
+        specialChar : boolean,
+        length : boolean,
+        strengthValue: number,
+    }
     const [password , setPassword] = useState("")
-    const [strength, setStrength] = useState({
+    const [strength, setStrength] = useState<StrengthState>({
         uppercase : false,
         lowercase : false,
         number : false,
@@ -16,7 +24,7 @@ const RegisterPage = () => {
     const evaluatePasswordStrength = (password: string) => {
         let strengthValue = 0;
 
-        const updatedStrength = {
+        const updatedStrength : StrengthState  = {
           uppercase: /[A-Z]/.test(password),
           lowercase: /[a-z]/.test(password),
           number: /[0-9]/.test(password),
@@ -51,7 +59,7 @@ const RegisterPage = () => {
     
         setStrength(updatedStrength)
     }
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
         evaluatePasswordStrength(newPassword);
