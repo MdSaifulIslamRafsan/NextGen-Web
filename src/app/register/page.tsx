@@ -10,8 +10,9 @@ const RegisterPage = () => {
         specialChar : boolean,
         length : boolean,
     }
-    const [password , setPassword] = useState("")
+    const [password , setPassword] = useState("");
     const [strength, setStrength] = useState(0);
+
     const updatedStrength : StrengthState  = {
         uppercase: /[A-Z]/.test(password),
         lowercase: /[a-z]/.test(password),
@@ -19,7 +20,7 @@ const RegisterPage = () => {
         specialChar: /[^A-Za-z0-9]/.test(password),
         length: password.length >= 6,
       };
-    const evaluatePasswordStrength = (password: string) => {
+    const evaluatePasswordStrength = () => {
         let strengthValue = 0;
 
        
@@ -36,6 +37,9 @@ const RegisterPage = () => {
         };
         if (updatedStrength.specialChar) {
             strengthValue += 1
+        };
+        if (updatedStrength.length) {
+            strengthValue += 1;
         };
         if (updatedStrength.length) {
             strengthValue += 1;
@@ -192,7 +196,7 @@ const RegisterPage = () => {
                   }`}
                 ></div>
               </div>
-              <p className="text-sm whitespace-nowrap mt-1 text-gray-600">
+              <p className={`text-sm whitespace-nowrap mt-1 text-gray-600 ${password.length === 0 ? "hidden " : ""}`}>
                 {strength === 1 && "Too Weak"}
                 {strength === 2 && "Weak"}
                 {strength === 3 && "Medium"}
