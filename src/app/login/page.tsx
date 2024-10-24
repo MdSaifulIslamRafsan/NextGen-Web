@@ -120,7 +120,7 @@ const LoginPage = () => {
       </div>
       <hr className="my-6 border-gray-400" />
       <div className="space-x-8 flex justify-center">
-        <button type="button" className="border-none outline-none p-4 bg-[#0a91cb5a] hover:bg-[#0a91cb75] rounded-lg">
+        <button type="button" className="border-none outline-none p-4 bg-[#0a91cb5a] hover:bg-[#0a91cb75] rounded-lg  hover:scale-105 transform transition-all duration-300 ease-in-out">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30px"
@@ -160,7 +160,7 @@ const LoginPage = () => {
           </svg>
         </button>
     
-        <button type="button" className="border-none p-4 outline-none bg-[#0a91cb5a] hover:bg-[#0a91cb75] rounded-lg">
+        <button type="button" className="border-none p-4 outline-none bg-[#0a91cb5a] hover:bg-[#0a91cb75] rounded-lg  hover:scale-105 transform transition-all duration-300 ease-in-out">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30px"
