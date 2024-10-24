@@ -9,55 +9,41 @@ const RegisterPage = () => {
         number : boolean,
         specialChar : boolean,
         length : boolean,
-        strengthValue: number,
     }
     const [password , setPassword] = useState("")
-    const [strength, setStrength] = useState<StrengthState>({
-        uppercase : false,
-        lowercase : false,
-        number : false,
-        specialChar : false,
-        length : false,
-        strengthValue: 0,
-    })
-
+    const [strength, setStrength] = useState(0);
+    const updatedStrength : StrengthState  = {
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /[0-9]/.test(password),
+        specialChar: /[^A-Za-z0-9]/.test(password),
+        length: password.length >= 6,
+      };
     const evaluatePasswordStrength = (password: string) => {
         let strengthValue = 0;
 
-        const updatedStrength : StrengthState  = {
-          uppercase: /[A-Z]/.test(password),
-          lowercase: /[a-z]/.test(password),
-          number: /[0-9]/.test(password),
-          specialChar: /[^A-Za-z0-9]/.test(password),
-          length: password.length >= 6,
-          strengthValue: 0,
-        };
+       
+        console.log(updatedStrength)
 
         if (updatedStrength.uppercase) {
             strengthValue += 1;
-            strength.uppercase = true;
-            
         };
         if (updatedStrength.lowercase) {
             strengthValue += 1
-            strength.lowercase = true;
         };
         if (updatedStrength.number) {
             strengthValue += 1
-            strength.number = true;
         };
         if (updatedStrength.specialChar) {
             strengthValue += 1
-            strength.specialChar = true;
         };
         if (updatedStrength.length) {
-            strengthValue += 1
-            strength.length = true;
+            strengthValue += 1;
         };
     
         updatedStrength.strengthValue = strengthValue;
     
-        setStrength(updatedStrength)
+        setStrength(strengthValue)
     }
     const handlePasswordChange = (e:  React.ChangeEvent<HTMLInputElement>) => {
         const newPassword = e.target.value;
@@ -169,7 +155,7 @@ const RegisterPage = () => {
               <div className="bg-gray-200 h-2 rounded-full">
                 <div
                   className={`h-2  rounded-full ${
-                    strength.lowercase ? 'bg-green-500 ' :
+                    updatedStrength.lowercase ? 'bg-green-500 ' :
                     'bg-gray-300'
                   }`}
                 ></div>
@@ -177,7 +163,7 @@ const RegisterPage = () => {
               <div className="bg-gray-200 h-2 rounded-full">
                 <div
                   className={`h-2  rounded-full ${
-                    strength.uppercase ? 'bg-green-500' :
+                    updatedStrength.uppercase ? 'bg-green-500' :
                     'bg-gray-300'
                   }`}
                 ></div>
@@ -185,7 +171,7 @@ const RegisterPage = () => {
               <div className="bg-gray-200 h-2 rounded-full">
                 <div
                   className={`h-2  rounded-full ${
-                    strength.number ? 'bg-green-500 ' :
+                    updatedStrength.number ? 'bg-green-500 ' :
                     'bg-gray-300'
                   }`}
                 ></div>
@@ -193,7 +179,7 @@ const RegisterPage = () => {
               <div className="bg-gray-200 h-2 rounded-full">
                 <div
                   className={`h-2  rounded-full ${
-                    strength.specialChar ? 'bg-green-500' :
+                    updatedStrength.specialChar ? 'bg-green-500' :
                     'bg-gray-300'
                   }`}
                 ></div>
@@ -201,17 +187,17 @@ const RegisterPage = () => {
               <div className="bg-gray-200 h-2 rounded-full">
                 <div
                   className={`h-2  rounded-full ${
-                    strength.length ? 'bg-green-500 ' :
+                    updatedStrength.length ? 'bg-green-500 ' :
                     'bg-gray-300'
                   }`}
                 ></div>
               </div>
               <p className="text-sm whitespace-nowrap mt-1 text-gray-600">
-                {strength.strengthValue === 1 && "Too Weak"}
-                {strength.strengthValue === 2 && "Weak"}
-                {strength.strengthValue === 3 && "Medium"}
-                {strength.strengthValue === 4 && "Strong"}
-                {strength.strengthValue === 5 && "Very Strong"}
+                {strength === 1 && "Too Weak"}
+                {strength === 2 && "Weak"}
+                {strength === 3 && "Medium"}
+                {strength === 4 && "Strong"}
+                {strength === 5 && "Very Strong"}
               </p>
             </div>
             <div className="flex items-center mt-6">
