@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-interface IFormInput {
+interface Inputs {
   email: string
   password: string
 }
@@ -12,8 +12,8 @@ interface IFormInput {
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm<IFormInput>()
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const { register, handleSubmit } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data)
   }
 
