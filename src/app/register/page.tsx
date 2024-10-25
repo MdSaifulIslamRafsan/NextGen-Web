@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -20,6 +21,7 @@ const RegisterPage = () => {
     length: boolean;
   }
   const [password, setPassword] = useState("");
+  const [confirmPassword, setconfirmPassword] = useState("");
   const [strength, setStrength] = useState(0);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [confirmShowPassword, setConfirmShowPassword] =
@@ -29,9 +31,7 @@ const RegisterPage = () => {
     handleSubmit,
     // formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-  };
+ 
 
   const updatedStrength: StrengthState = {
     uppercase: /[A-Z]/.test(password),
@@ -68,7 +68,14 @@ const RegisterPage = () => {
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
+    setconfirmPassword(newPassword)
   };
+
+  const onSubmit: SubmitHandler<Inputs> =  (data) => {
+    
+  };
+
+
   return (
     <div
       className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4"
@@ -155,7 +162,8 @@ const RegisterPage = () => {
             </div>
             <div className="relative flex items-center">
               <input
-                {...register("confirmPassword", { required: true })}
+                required
+                onChange={handlePasswordChange}
                 type={confirmShowPassword ? "text" : "password"}
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                 placeholder="Confirm password"

@@ -7,7 +7,7 @@ export const contactDB = async() => {
             console.log("mongoose successfully connected");
         })
         connection.on('error', ()=>{
-            console.log("mongoose connection error: ", err);
+            console.log("mongoose connection error: ");
             process.exit(1)
         })
 
