@@ -1,6 +1,5 @@
-import React from 'react';
 
-const TermsAndConditions: React.FC = () => {
+const TermsAndConditions = () => {
   return (
     <div className="max-w-[1440px] w-10/11 mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Terms and Conditions</h1>
@@ -32,7 +31,7 @@ const TermsAndConditions: React.FC = () => {
 
       <h2 className="text-2xl font-semibold mt-6 mb-4">5. Contest Rules and Participation</h2>
       <p className="mb-4">
-        All contests on ContestHub are governed by specific rules set by the contest creator. Participants must comply with these rules to remain eligible. Contest creators are responsible for ensuring that contests are fair, transparent, and in compliance with ContestHub's guidelines.
+        All contests on ContestHub are governed by specific rules set by the contest creator. Participants must comply with these rules to remain eligible. Contest creators are responsible for ensuring that contests are fair, transparent, and in compliance with {`ContestHub's`} guidelines.
       </p>
 
       <h2 className="text-2xl font-semibold mt-6 mb-4">6. Payments and Prizes</h2>
