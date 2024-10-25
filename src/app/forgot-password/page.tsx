@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-
+import { useForm, SubmitHandler } from "react-hook-form";
+interface Inputs {
+    email: string;
+}
 
 
 const ForgetPasswordPage = () => {
-    const [emailSent, setEmailSent] = useState<boolean>(false);
+    const { register, handleSubmit } = useForm<Inputs>();
+
+    const onSubmit: SubmitHandler<Inputs> = (data) => {
+      console.log(data);
+    }
  
 
   return (
@@ -20,7 +26,7 @@ const ForgetPasswordPage = () => {
     >
       <div className="max-w-md w-full mx-auto">
         <form
-         
+        onSubmit={handleSubmit(onSubmit)}
           className="bg-opacity-70 bg-white rounded-2xl p-6 shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)]"
         >
           <div className="mb-12">
@@ -35,7 +41,7 @@ const ForgetPasswordPage = () => {
               <div className="relative flex items-center mb-6">
                 <input
                   type="email"
-                 
+                  {...register("email", { required: true })}
                   className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                   placeholder="Enter email"
                 />
