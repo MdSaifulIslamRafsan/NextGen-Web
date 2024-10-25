@@ -2,10 +2,21 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+interface IFormInput {
+  email: string
+  password: string
+}
+
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { register, handleSubmit } = useForm<IFormInput>()
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data)
+  }
+
   return (
     <div
       className="flex justify-center items-center font-[sans-serif] h-full min-h-screen p-4"
@@ -16,16 +27,15 @@ const LoginPage = () => {
       }}
     >
       <div className="max-w-md w-full mx-auto">
-        <form className="bg-opacity-70 bg-white rounded-2xl p-6 shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)]">
+        <form  onSubmit={handleSubmit(onSubmit)} className="bg-opacity-70 bg-white rounded-2xl p-6 shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)]">
           <div className="mb-12">
             <h3 className="text-gray-800 text-3xl font-extrabold">Sign in</h3>
           </div>
           <div>
             <div className="relative flex items-center">
               <input
-                name="email"
                 type="text"
-                required
+                {...register("email", { required: true })}
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                 placeholder="Enter email"
               />
@@ -63,9 +73,8 @@ const LoginPage = () => {
           <div className="mt-6">
           <div className="relative flex items-center">
                 <input
-                  name="password"
                   type={showPassword ? "text" : "password"}
-                  required
+                  {...register("password", { required: true })}
                   className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                   placeholder="Enter password"
                 />
@@ -101,7 +110,6 @@ const LoginPage = () => {
           </div>
           <div className="mt-12">
             <button
-              type="button"
               className="w-full py-2.5 px-4 text-sm font-semibold tracking-wider rounded-full text-white bg-gray-800 hover:bg-[#222] focus:outline-none"
             >
               Sign in
