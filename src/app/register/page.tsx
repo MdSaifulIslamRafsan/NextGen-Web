@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -230,15 +231,15 @@ const RegisterPage = () => {
             />
             <label
               htmlFor="agree-terms"
-              className="ml-3 block text-sm text-gray-800"
+              className="ml-3 block text-[13px] text-gray-800"
             >
               I agree to the{" "}
-              <a
+              <Link
                 href="/terms"
-                className="text-blue-600 font-semibold hover:underline"
+                className="text-blue-600 sm:font-semibold hover:underline"
               >
                 terms and conditions
-              </a>
+              </Link>
             </label>
           </div>
           <div className="text-black mt-2">
