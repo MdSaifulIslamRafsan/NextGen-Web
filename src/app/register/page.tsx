@@ -10,6 +10,7 @@ interface Inputs {
   email: string;
   password: string;
   confirmPassword: string;
+  agreeTerms: string;
 }
 
 const RegisterPage = () => {
@@ -26,12 +27,7 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [confirmShowPassword, setConfirmShowPassword] =
     useState<boolean>(false);
-  const {
-    register,
-    handleSubmit,
-    // formState: { errors },
-  } = useForm<Inputs>();
- 
+
 
   const updatedStrength: StrengthState = {
     uppercase: /[A-Z]/.test(password),
@@ -65,13 +61,24 @@ const RegisterPage = () => {
     evaluatePasswordStrength();
   }, [password]);
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    setconfirmPassword(newPassword)
-  };
+
+const [passwordDonotMatch, setPasswordDonotMatch] = useState("");
+  
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> =  (data) => {
+    if(!updatedStrength.uppercase || !updatedStrength.lowercase || !updatedStrength.number || !updatedStrength.specialChar || !updatedStrength.length){
+      return;
+    }
+    if (password !== confirmPassword) {
+      setPasswordDonotMatch("Passwords do not match!");
+      return;
+    }
+    setPasswordDonotMatch("");
     
   };
 
@@ -96,7 +103,13 @@ const RegisterPage = () => {
           <div className="space-y-6">
             <div className="relative flex items-center">
               <input
-                {...register("name", { required: true })}
+                 {...register("name", {
+                  required: true,
+                  minLength: {
+                    value: 5,
+                    message: "Name must be at least 5 characters",
+                  },
+                })}
                 type="text"
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                 placeholder="Enter your name"
@@ -111,9 +124,18 @@ const RegisterPage = () => {
                 <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
               </svg>
             </div>
+            {errors.name && (
+                <p className="text-red-600 text-sm">{errors.name.message}</p>
+              )}
             <div className="relative flex items-center">
               <input
-                {...register("email", { required: true })}
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email",
+                  },
+                })}
                 type="email"
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                 placeholder="Enter email"
@@ -139,12 +161,14 @@ const RegisterPage = () => {
                 </g>
               </svg>
             </div>
+             {errors.email && (
+                <p className="text-red-600 text-sm">{errors.email.message}</p>
+              )}
             <div className="relative flex items-center">
               <input
                 {...register("password", { required: true })}
                 type={showPassword ? "text" : "password"}
-                onChange={handlePasswordChange}
-                required
+                onChange={(e) => setPassword(e.target.value)}
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                 placeholder="Enter password"
               />
@@ -162,8 +186,7 @@ const RegisterPage = () => {
             </div>
             <div className="relative flex items-center">
               <input
-                required
-                onChange={handlePasswordChange}
+                onChange={(e) => setconfirmPassword(e.target.value)}
                 type={confirmShowPassword ? "text" : "password"}
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                 placeholder="Confirm password"
@@ -180,6 +203,7 @@ const RegisterPage = () => {
                 )}
               </button>
             </div>
+            {passwordDonotMatch && <p className="font-normal text-red-600">{passwordDonotMatch}</p>}
           </div>
           <div className="mt-2 grid grid-cols-5 gap-5">
             <div className="bg-gray-200 h-2 rounded-full">
@@ -232,9 +256,8 @@ const RegisterPage = () => {
           <div className="flex items-center mt-6">
             <input
               id="agree-terms"
-              name="agree-terms"
+              {...register("agreeTerms", { required: "You must agree to the terms" })}
               type="checkbox"
-              required
               className="h-4 w-4 shrink-0 rounded"
             />
             <label
@@ -250,6 +273,7 @@ const RegisterPage = () => {
               </Link>
             </label>
           </div>
+          {errors.agreeTerms && <p className="text-red-600 text-sm">{errors.agreeTerms.message}</p>}
           <div className="text-black mt-2">
             <p>Password must fulfill the following criteria:</p>
             <ul>
