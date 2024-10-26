@@ -2,21 +2,23 @@ import mongoose from 'mongoose';
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        required: [true , "name is required"],
         unique: true
     },
     email: {
         type: String,
-        required: true,
+        required: [true , "email is required"],
         unique: true
     },
     password: {
         type: String,
-        required: true
+        required: [true , "password is required"],
+        minlength: 6,
+        select: false
     },
     role: {
         type: String,
-        default: 'user'
+        default: "user"
     },
     isActive: {
         type: Boolean,

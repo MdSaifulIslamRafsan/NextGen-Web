@@ -1,7 +1,7 @@
 
 import { connectDB } from '@/app/Database/dbconfig';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import User from './../../../models/userModel';
 
@@ -9,8 +9,9 @@ export const POST = async (request: NextRequest) => {
     try {
         await connectDB();
         const userInfo = await request.json();
-        const {email, password} = userInfo;
-        console.log("line 13", email)
+        const {name, email, password} = userInfo;
+        console.log("line 13", name)
+        console.log("line 14", email)
         const userExist = await User.findOne({email});
         console.log("line 15", userExist)
         if(userExist){
@@ -22,7 +23,7 @@ export const POST = async (request: NextRequest) => {
         await newUser.save();
         
         return NextResponse.json({message: "user successfully login" , status: 200 })
-    } catch (error : any) {
+    } catch (error) {
        return NextResponse.json({message: error.message , status: 500 })
     }
 }

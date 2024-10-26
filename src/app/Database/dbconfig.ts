@@ -7,11 +7,11 @@ export const connectDB = async() => {
         connection.on("connected", ()=> {
             console.log("mongoose successfully connected");
         });
-        connection.on("error", (error :any)=>{
+        connection.on("error", (error)=>{
             console.log("mongoose connection error: ", error);
             process.exit(1);
         });
-    } catch (error :any) {
+    } catch (error) {
         console.log(error.message);
     }
 }

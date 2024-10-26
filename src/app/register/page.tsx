@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import {useCallback, useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 interface Inputs {
@@ -36,7 +36,7 @@ const RegisterPage = () => {
     specialChar: /[^A-Za-z0-9]/.test(password),
     length: password.length >= 6,
   };
-  const evaluatePasswordStrength = () => {
+  const evaluatePasswordStrength = useCallback(() => {
     let strengthValue = 0;
 
     if (updatedStrength.uppercase) {
@@ -55,11 +55,11 @@ const RegisterPage = () => {
       strengthValue += 1;
     }
     setStrength(strengthValue);
-  };
+  });
 
   useEffect(() => {
     evaluatePasswordStrength();
-  }, [password]);
+}, [password, evaluatePasswordStrength]);
 
 
 const [passwordDonotMatch, setPasswordDonotMatch] = useState("");
