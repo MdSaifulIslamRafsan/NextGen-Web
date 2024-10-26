@@ -22,7 +22,7 @@ export const POST = async (request: NextRequest) => {
         const newUser = new User({...userInfo, password: hashPassword})
         await newUser.save();
         
-        return NextResponse.json({message: "user successfully login" , status: 200 })
+        return NextResponse.json({message: "user successfully register" , status: 200 })
     } catch (error) {
        return NextResponse.json({message: error.message , status: 500 })
     }

@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
-import {useCallback, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 interface Inputs {
@@ -36,30 +36,31 @@ const RegisterPage = () => {
     specialChar: /[^A-Za-z0-9]/.test(password),
     length: password.length >= 6,
   };
-  const evaluatePasswordStrength = useCallback(() => {
-    let strengthValue = 0;
-
-    if (updatedStrength.uppercase) {
-      strengthValue += 1;
-    }
-    if (updatedStrength.lowercase) {
-      strengthValue += 1;
-    }
-    if (updatedStrength.number) {
-      strengthValue += 1;
-    }
-    if (updatedStrength.specialChar) {
-      strengthValue += 1;
-    }
-    if (updatedStrength.length) {
-      strengthValue += 1;
-    }
-    setStrength(strengthValue);
-  });
+  
 
   useEffect(() => {
+    const evaluatePasswordStrength = () => {
+      let strengthValue = 0;
+  
+      if (updatedStrength.uppercase) {
+        strengthValue += 1;
+      }
+      if (updatedStrength.lowercase) {
+        strengthValue += 1;
+      }
+      if (updatedStrength.number) {
+        strengthValue += 1;
+      }
+      if (updatedStrength.specialChar) {
+        strengthValue += 1;
+      }
+      if (updatedStrength.length) {
+        strengthValue += 1;
+      }
+      setStrength(strengthValue);
+    };
     evaluatePasswordStrength();
-}, [password, evaluatePasswordStrength]);
+}, [password, updatedStrength.length, updatedStrength.lowercase, updatedStrength.number, updatedStrength.specialChar,  updatedStrength.uppercase])
 
 
 const [passwordDonotMatch, setPasswordDonotMatch] = useState("");
