@@ -79,6 +79,13 @@ const {
       return;
     }
     setPasswordDonotMatch("");
+    axios.post('/register/api', data)
+    .then( (response) => {
+      console.log(response.data);
+    })
+    .catch( (error) => {
+      console.log(error);
+    });
     
   };
 
