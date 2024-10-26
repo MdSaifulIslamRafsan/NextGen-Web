@@ -8,7 +8,7 @@ interface Inputs {
 
 
 const ForgetPasswordPage = () => {
-    const { register, handleSubmit } = useForm<Inputs>();
+    const { register, handleSubmit,  formState: { errors }, } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
       console.log(data);
@@ -38,10 +38,16 @@ const ForgetPasswordPage = () => {
             </p>
           </div>
         
-              <div className="relative flex items-center mb-6">
+              <div className="relative flex items-center mb-4">
                 <input
                   type="email"
-                  {...register("email", { required: true })}
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Please enter a valid email",
+                    },
+                  })}
                   className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                   placeholder="Enter email"
                 />
@@ -75,6 +81,9 @@ const ForgetPasswordPage = () => {
                   </g>
                 </svg>
               </div>
+              {errors.email && (
+                <p className="text-red-600 mb-4 text-sm">{errors.email.message}</p>
+              )}
               <button
                 type="submit"
                 className="w-full py-2.5 px-4 text-sm font-semibold tracking-wider rounded-full text-white bg-gray-800 hover:bg-[#222] focus:outline-none"
