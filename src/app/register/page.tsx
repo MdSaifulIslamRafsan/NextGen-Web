@@ -111,7 +111,7 @@ const {
             <div className="relative flex items-center">
               <input
                  {...register("name", {
-                  required: true,
+                  required: "Name is required",
                   minLength: {
                     value: 5,
                     message: "Name must be at least 5 characters",
@@ -137,7 +137,7 @@ const {
             <div className="relative flex items-center">
               <input
                 {...register("email", {
-                  required: true,
+                  required: "Email is required",
                   pattern: {
                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                     message: "Please enter a valid email",

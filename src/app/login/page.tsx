@@ -12,7 +12,7 @@ interface Inputs {
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { register, handleSubmit } = useForm<Inputs>()
+  const { register, handleSubmit ,  formState: { errors } } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data)
   }
@@ -35,7 +35,13 @@ const LoginPage = () => {
             <div className="relative flex items-center">
               <input
                 type="text"
-                {...register("email", { required: true })}
+                {...register("email", {
+                  required: "Email is required",
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: "Please enter a valid email",
+                  },
+                })}
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                 placeholder="Enter email"
               />
@@ -69,12 +75,15 @@ const LoginPage = () => {
                 </g>
               </svg>
             </div>
+            {errors.email && (
+                <p className="text-red-600 text-sm">{errors.email.message}</p>
+              )}
           </div>
           <div className="mt-6">
           <div className="relative flex items-center">
                 <input
                   type={showPassword ? "text" : "password"}
-                  {...register("password", { required: true })}
+                  {...register("password", {   required: "Password is required", })}
                   className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
                   placeholder="Enter password"
                 />
@@ -84,6 +93,9 @@ const LoginPage = () => {
                 </button>
               </div>
           </div>
+          {errors.password && (
+                <p className="text-red-600 text-sm">{errors.password.message}</p>
+              )}
           <div className="flex flex-wrap items-center justify-between gap-4 mt-6">
             <div className="flex items-center">
               <input
