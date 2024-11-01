@@ -1,5 +1,5 @@
 
-import { connectDB } from '@/app/Database/dbconfig';
+import { connectDB } from '@/Database/dbconfig';
 import {hashSync } from "bcrypt-ts";
 // import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
@@ -9,11 +9,9 @@ export const POST = async (request: NextRequest) => {
     try {
         await connectDB();
         const userInfo = await request.json();
-        const {name, email, password} = userInfo;
-        console.log("line 13", name)
-        console.log("line 14", email)
+        const {email, password} = userInfo;
         const userExist = await User.findOne({email});
-        console.log("line 15", userExist)
+       
         if(userExist){
             return NextResponse.json({message: "user already exist", status: 400})
         }
