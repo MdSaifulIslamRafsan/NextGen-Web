@@ -4,7 +4,7 @@ import {hashSync } from "bcrypt-ts";
 // import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import User from './../../../models/userModel';
-import { SendEmail } from '@/Helper/Sendmail';
+import { SendEmail } from '@/Helper/SendMail';
 
 export const POST = async (request: NextRequest) => {
     try {

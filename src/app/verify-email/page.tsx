@@ -18,7 +18,7 @@ const VerifyEmail: React.FC = () => {
           router.push("/login");
         }
       } catch (error: unknown) {
-        throw new Error(error);
+        throw new Error(String(error));
       }
   };
 
@@ -27,7 +27,7 @@ const VerifyEmail: React.FC = () => {
       <div className="p-8 bg-white shadow-lg rounded-lg max-w-md w-full text-center animate__animated animate__fadeIn animate__faster">
         <h1 className="text-3xl font-semibold text-gray-800 mb-4 animate__animated animate__bounceIn">Verify Your Email</h1>
         <p className="text-gray-600 mb-8">
-          We've sent a verification link to your email address. Please check your inbox and click on the link to verify your email.
+          {`We've`} sent a verification link to your email address. Please check your inbox and click on the link to verify your email.
         </p>
         <div className="flex flex-col items-center">
           <button
