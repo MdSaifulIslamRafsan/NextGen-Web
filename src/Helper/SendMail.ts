@@ -37,7 +37,7 @@ export const SendEmail = async (
   <p class="text-base text-gray-600 mb-6">
     Thank you for signing up. Please verify your email address by clicking the button below:
   </p>
-  <a href="process.env.NEXT_PUBLIC_BASE_URL/verify?email={{email}}&token={{token}}"
+  <a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}"
      class="inline-block bg-blue-500 text-white font-medium text-base py-2 px-4 rounded-md text-center">
      Verify Email
   </a>
