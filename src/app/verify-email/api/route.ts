@@ -9,13 +9,10 @@ export const GET = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const token = searchParams.get("token");
-    console.log("from line 8", token);
-    console.log(token);
     const user = await User.findOne({
         verifyToken: token,
         verifyTokenExpiration: { $gt: Date.now() },
     });
-    console.log("from line 14 user", user);
     if (!user) {
       return NextResponse.json({ message: "Invalid token", status: 400 });
     }

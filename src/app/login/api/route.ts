@@ -17,7 +17,6 @@ type ErrorMessage = {
         const userInfo : UserInfoType = await request.json();
         const {email , password} = userInfo;
         const user = await User.findOne({email}).select('+password');
-        console.log('line 21', user)
         if(!user) {
             return NextResponse.json({message: "user not found", status: 400})
         }
@@ -25,17 +24,14 @@ type ErrorMessage = {
             return NextResponse.json({message: "please verify your email", status: 400})
         }
         const isMatchPassword = compareSync(password, user?.password);
-        console.log('line number 28', isMatchPassword)
         if(!isMatchPassword){
             return NextResponse.json({message: "Password not match", status: 400})
         }
 
-        const token = jwt.sign({email}, process.env.JWT_SECRET , {
+        const token = jwt.sign({email}, process.env.JWT_SECRET as string , {
             expiresIn: '1h',
-        })
+        });
         
-
-        console.log('line number 11', email , password)
         const response = NextResponse.json({message: "successful" , token,  status:200});
         response.cookies.set('token' , token);
         return response;

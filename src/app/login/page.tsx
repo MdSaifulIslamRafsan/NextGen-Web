@@ -5,6 +5,8 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import axios  from 'axios';
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 interface Inputs {
   email: string;
   password: string;
@@ -14,13 +16,28 @@ type ErrorMessage = {
 }
 
 const LoginPage =  () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { register, handleSubmit ,  formState: { errors } } = useForm<Inputs>()
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     try {
-      const request = await  axios.post('/login/api', data);
-      console.log(request);
+      const request = await axios.post('/login/api', data);
+      if(request.data.status === 200){
+        Swal.fire({
+          title: "Login Successful!",
+          text: "You have logged in successfully.",
+          icon: "success",
+        });
+        router.push('/')
+      }
+      else{
+        Swal.fire({
+          title: "Login Failed!",
+          text: request.data.message,
+          icon: "error",
+        });
+      }
+
     } catch (error) {
       console.log((error as ErrorMessage).message);
     }

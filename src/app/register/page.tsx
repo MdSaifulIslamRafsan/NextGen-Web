@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Swal from "sweetalert2";
+
 interface Inputs {
   name: string;
   email: string;
@@ -82,10 +84,25 @@ const {
     setPasswordDonotMatch("");
     axios.post('/register/api', data)
     .then( (response) => {
-      console.log(response.data);
+      console.log(response.data.status)
+      if(response.data.status === 200){
+      Swal.fire({
+        title: 'Registration Successful!',
+        text: 'Please check your email for verification.',
+        icon: 'success',
+      });
+    }
+    else{
+      Swal.fire({
+        title: 'Error!',
+        text: response?.data?.message || 'Registration failed. Please try again.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
     })
-    .catch( (error) => {
-      console.log(error);
+    .catch( (error : unknown) => {
+      console.log(error)
     });
     
   };
