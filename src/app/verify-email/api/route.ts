@@ -14,7 +14,7 @@ export const GET = async (request: NextRequest) => {
         verifyTokenExpiration: { $gt: Date.now() },
     });
     if (!user) {
-      return NextResponse.json({ message: "Invalid token", status: 400 });
+      return NextResponse.json({ message: "Invalid verify token", status: 400 });
     }
     user.isVerified = true;
     user.verifyToken = undefined;

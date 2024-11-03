@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 const VerifyEmail: React.FC = () => {
   
@@ -15,7 +16,20 @@ const VerifyEmail: React.FC = () => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email/api?token=${token}`
         );
         if (response.data.message === "Email verified successfully") {
+          Swal.fire({
+            title: 'Success!',
+            text: 'Your email has been verified successfully!',
+            icon: 'success',
+          })
           router.push("/login");
+        }
+        else{
+          Swal.fire({
+            title: 'Error!',
+            text: response?.data?.message ,
+            icon: 'error',
+            confirmButtonText: 'OK',
+          });
         }
       } catch (error: unknown) {
         throw new Error(String(error));
