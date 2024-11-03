@@ -4,17 +4,26 @@ import Link from "next/link";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import axios  from 'axios';
 interface Inputs {
-  email: string
-  password: string
+  email: string;
+  password: string;
+}
+type ErrorMessage = {
+  message: string;
 }
 
-
-const LoginPage = () => {
+const LoginPage =  () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { register, handleSubmit ,  formState: { errors } } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    try {
+      const request = await  axios.post('/login/api', data);
+      console.log(request);
+    } catch (error) {
+      console.log((error as ErrorMessage).message);
+    }
   }
 
   return (

@@ -1,15 +1,20 @@
 
 import { connectDB } from '@/Database/dbconfig';
 import {hashSync } from "bcrypt-ts";
-// import jwt from 'jsonwebtoken';
 import { NextRequest, NextResponse } from 'next/server';
 import User from './../../../models/userModel';
 import { SendEmail } from '@/Helper/SendMail';
+interface UserInfoType {
+    name: string;
+    email : string;
+    password : string;
+  }
+
 
 export const POST = async (request: NextRequest) => {
     try {
         await connectDB();
-        const userInfo = await request.json();
+        const userInfo : UserInfoType = await request.json();
         const {email, password} = userInfo;
         const userExist = await User.findOne({email});
        
