@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 
 export const SendEmail = async (
   email: string,
-  emailType: string
+  emailType: "verify-email" | "reset-password"
 ): Promise<string> => {
   const token = hashSync(email, 10);
   if (emailType === "verify-email") {
@@ -27,22 +27,49 @@ export const SendEmail = async (
       }
     );
   }
+  if(emailType === "reset-password"){
+    await User.findOneAndUpdate(
+      {email},
+      {
+          resetToken: token,
+          resetTokenExpiration: Date.now() + 60 * 60 * 10000,
+      }
+     )
+  }
+  const link =
+  emailType === "verify-email"
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}`
+    : `${process.env.NEXT_PUBLIC_BASE_URL}/reset-password?token=${token}`;
+
+    const emailContent = emailType === "verify-email"
+    ? {
+        subject: "Verify Your Email Address",
+        message: "Thank you for signing up. Please verify your email address by clicking the button below:",
+        buttonText: "Verify Email",
+      }
+    : {
+        subject: "Reset Your Password",
+        message: "You requested a password reset. Click the button below to reset your password:",
+        buttonText: "Reset Password",
+      };
+
+
 
   const mailOptions = {
     from: process.env.GMAIL_USER,
     to: email,
-    subject: "Verify Your Email Address",
+    subject: emailContent.subject,
     html: `<div class="bg-gray-50 text-gray-900 p-4">
   <h2 class="text-2xl font-bold text-gray-800 mb-4">Welcome to Our Service!</h2>
   <p class="text-base text-gray-600 mb-6">
-    Thank you for signing up. Please verify your email address by clicking the button below:
+   ${emailContent.message}
   </p>
-  <a href="${process.env.NEXT_PUBLIC_BASE_URL}/verify-email?token=${token}"
+  <a href="${link}"
      class="inline-block bg-blue-500 text-white font-medium text-base py-2 px-4 rounded-md text-center">
-     Verify Email
+     ${emailContent.buttonText}
   </a>
   <p class="text-sm text-gray-500 mt-6">
-    If you did not create an account, you can safely ignore this email.
+       If you did not request this, please ignore this email.
   </p>
   <p class="text-base text-gray-600">
     Best regards,<br>
