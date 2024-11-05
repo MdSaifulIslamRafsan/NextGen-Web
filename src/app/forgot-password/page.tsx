@@ -3,6 +3,7 @@
 import axios from "axios";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
+import Swal from "sweetalert2";
 interface Inputs {
     email: string;
 }
@@ -16,7 +17,20 @@ const ForgetPasswordPage = () => {
     const onSubmit: SubmitHandler<Inputs> = async(data) => {
       try {
        const res = await axios.post('/forgot-password/api', data);
-       console.log(res)
+       if(res.data.status === 200){
+        Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: "Password reset link sent! Check your email.",
+        });
+       }
+       else{
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: res.data.message,
+        });
+       }
       } catch (error : unknown) {
           console.log((error as ErrorMessage).message);
         
