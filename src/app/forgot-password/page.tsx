@@ -1,17 +1,27 @@
 "use client";
 
+import axios from "axios";
 import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 interface Inputs {
     email: string;
 }
-
+type ErrorMessage = {
+  message: string;
+}
 
 const ForgetPasswordPage = () => {
     const { register, handleSubmit,  formState: { errors }, } = useForm<Inputs>();
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-      console.log(data);
+    const onSubmit: SubmitHandler<Inputs> = async(data) => {
+      try {
+       const res = await axios.post('/forgot-password/api', data);
+       console.log(res)
+      } catch (error : unknown) {
+          console.log((error as ErrorMessage).message);
+        
+      }
+     
     }
  
 

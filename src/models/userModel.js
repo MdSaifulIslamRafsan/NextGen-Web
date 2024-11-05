@@ -36,7 +36,14 @@ const userSchema = new mongoose.Schema({
     },
     verifyTokenExpiration: {
         type: Date
+    },
+    resetToken: {
+        type: string
+    },
+    resetTokenExpiration: {
+        type: Date
     }
+
 },
 {
     collection : "users"
