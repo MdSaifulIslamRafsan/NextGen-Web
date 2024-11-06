@@ -64,8 +64,25 @@ const RegisterPage = () => {
 
 const [passwordDonotMatch, setPasswordDonotMatch] = useState("");
   
+const {
+  register,
+  handleSubmit,
+  formState: { errors },
+} = useForm<Inputs>();
 
- 
+  const onSubmit: SubmitHandler<Inputs> =  (data) => {
+    if(!updatedStrength.uppercase || !updatedStrength.lowercase || !updatedStrength.number || !updatedStrength.specialChar || !updatedStrength.length){
+      return;
+    }
+    if (password !== confirmPassword) {
+      setPasswordDonotMatch("Passwords do not match!");
+      return;
+    }
+    setPasswordDonotMatch("");
+   
+    
+  };
+
 
   return (
     <div
@@ -78,17 +95,17 @@ const [passwordDonotMatch, setPasswordDonotMatch] = useState("");
     >
       <div className="max-w-md w-full mx-auto">
         <form
-          
+          onSubmit={handleSubmit(onSubmit)}
           className="bg-opacity-70 bg-white rounded-2xl p-6 shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)]"
         >
           <div className="mb-12">
-            <h3 className="text-gray-800 text-3xl font-extrabold">Reset Password</h3>
-            <p className="text-gray-800 mt-3">Enter your new password.</p>
+            <h3 className="text-gray-800 text-3xl font-extrabold">Register</h3>
           </div>
           <div className="space-y-6">
+            
             <div className="relative flex items-center">
               <input
-               
+                {...register("password", { required: true })}
                 type={showPassword ? "text" : "password"}
                 onChange={(e) => setPassword(e.target.value)}
                 className="bg-transparent w-full text-sm text-gray-800 border-b border-gray-400 focus:border-gray-800 px-2 py-3 outline-none placeholder:text-gray-800"
@@ -175,8 +192,6 @@ const [passwordDonotMatch, setPasswordDonotMatch] = useState("");
               {strength === 5 && "Very Strong"}
             </p>
           </div>
-          
-         
           <div className="text-black mt-2">
             <p>Password must fulfill the following criteria:</p>
             <ul>
