@@ -17,7 +17,6 @@ const ResetPage = () => {
 
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
-  console.log(token)
   const router = useRouter();
 
 
@@ -35,8 +34,7 @@ const ResetPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [confirmShowPassword, setConfirmShowPassword] =
     useState<boolean>(false);
-
-
+    
   const updatedStrength: StrengthState = {
     uppercase: /[A-Z]/.test(password),
     lowercase: /[a-z]/.test(password),
@@ -88,9 +86,9 @@ const {
     }
     setPasswordDonotMatch("");
     axios
-  .get(`${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/api?token=${token}`)
+  .post(`${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/api?token=${token}`, {...data, token})
   .then((response) => {
-    if (response.data.message === "Email verified successfully") {
+    if (response.data.status === 200) {
       Swal.fire({
         title: 'Reset Successful!',
         text: 'Your password has been reset successfully',

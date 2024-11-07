@@ -95,7 +95,7 @@ const {
     else{
       Swal.fire({
         title: 'Error!',
-        text: response?.data?.message || 'Registration failed. Please try again.',
+        text: response?.data?.message,
         icon: 'error',
         confirmButtonText: 'OK'
       });
