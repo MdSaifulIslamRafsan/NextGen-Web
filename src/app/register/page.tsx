@@ -320,12 +320,12 @@ const {
             </button>
             <p className="text-gray-800 text-sm text-center mt-6">
               Already have an account?{" "}
-              <a
+              <Link
                 href="/login"
                 className="text-blue-600 font-semibold hover:underline"
               >
                 Sign In
-              </a>
+              </Link>
             </p>
           </div>
         </form>

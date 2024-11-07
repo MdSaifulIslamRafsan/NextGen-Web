@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -12,7 +13,15 @@ interface Inputs {
   confirmPassword: string;
 }
 
-const RegisterPage = () => {
+const ResetPage = () => {
+
+  const searchParams = useSearchParams();
+  const token = searchParams.get('token');
+  console.log(token)
+  const router = useRouter();
+
+
+
   interface StrengthState {
     uppercase: boolean;
     lowercase: boolean;
@@ -67,7 +76,6 @@ const [passwordDonotMatch, setPasswordDonotMatch] = useState("");
 const {
   register,
   handleSubmit,
-  formState: { errors },
 } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> =  (data) => {
@@ -79,8 +87,28 @@ const {
       return;
     }
     setPasswordDonotMatch("");
-   
-    
+    axios
+  .get(`${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/api?token=${token}`)
+  .then((response) => {
+    if (response.data.message === "Email verified successfully") {
+      Swal.fire({
+        title: 'Reset Successful!',
+        text: 'Your password has been reset successfully',
+        icon: 'success',
+      });
+      router.push('/login')
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: response?.data?.message,
+        icon: 'error',
+      });
+    }
+  })
+  .catch( (error : unknown) => {
+    console.log(error)
+  });
+
   };
 
 
@@ -99,7 +127,12 @@ const {
           className="bg-opacity-70 bg-white rounded-2xl p-6 shadow-[0_2px_16px_-3px_rgba(6,81,237,0.3)]"
         >
           <div className="mb-12">
-            <h3 className="text-gray-800 text-3xl font-extrabold">Register</h3>
+          <h3 className="text-gray-800 text-3xl font-extrabold">
+              Reset Password
+            </h3>
+            <p className="text-gray-600 mt-2">
+              Enter your new password .
+            </p>
           </div>
           <div className="space-y-6">
             
@@ -225,4 +258,4 @@ const {
   );
 };
 
-export default RegisterPage;
+export default ResetPage;

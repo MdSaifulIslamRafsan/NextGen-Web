@@ -17,13 +17,16 @@ export const SendEmail = async (
   email: string,
   emailType: "verify-email" | "reset-password"
 ): Promise<string> => {
+
+  
   const token = hashSync(email, 10);
+  const expirationTime = Date.now() + 60 * 60 * 10000;
   if (emailType === "verify-email") {
     await User.findOneAndUpdate(
       { email },
       {
         verifyToken: token,
-        verifyTokenExpiration: Date.now() + 60 * 60 * 10000,
+        verifyTokenExpiration: expirationTime,
       }
     );
   }
@@ -32,7 +35,7 @@ export const SendEmail = async (
       {email},
       {
           resetToken: token,
-          resetTokenExpiration: Date.now() + 60 * 60 * 10000,
+          resetTokenExpiration: expirationTime,
       }
      )
   }
